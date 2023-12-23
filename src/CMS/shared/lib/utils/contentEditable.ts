@@ -1,4 +1,5 @@
 const contentEditableTrue = () => {
+	// Эта функция для секции в которой структура содержит только текстовые ноды для которых мы создадим пользовательский тег и зададим ему contentEditable
 	const main = document.querySelector('main')
 	let textNodes: Text[] = []
 	const recursy = (element: Node) => {

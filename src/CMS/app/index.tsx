@@ -16,19 +16,23 @@ import { page } from '@prisma/client'
 import { PencilRuler } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
-import { contentEditableTrue } from '../shared/lib/utils/contentEditableTrue'
+import { contentEditableTrue } from '../shared/lib/utils/contentEditable'
 import { onChangeTextNode } from '../shared/lib/utils/onChangeTextNode'
+import { extraContentEditableTrue } from '../shared/lib/utils/extraContentEditable'
 
 export default function CMS({ pages }: { pages: page[] }) {
 	const path = usePathname()
 
 	useEffect(() => {
 		contentEditableTrue()
+		extraContentEditableTrue('extra-title-section')
 	}, [path]) // делаем вcе текстовые ноды на странице в contentEditable = true
 
 	useEffect(() => {
 		onChangeTextNode(1)
 	}, []) // Потому что под индексом один у нас главная страница в базе данных
+
+
 
 	return (
 		<Sheet>
