@@ -1,13 +1,15 @@
 import ProductsList from '@/entities/productsList/ui/ProductsList'
-import { getBestProductsList } from '../api/getBestProductsList'
+import { getBestProductsList } from '../../../shared/api/getBestProductsList'
 export default async function BestProducts() {
-
 	const data = await getBestProductsList()
 
 	return (
 		<section className='pt-[80px] pb-[110px] bg-cover bg-center bg-no-repeat bg-our-best bg-parchment'>
 			<div className='container'>
-				<h2 extra-title-section='true' className='text-center text-black text-[24px] leading-normal'>
+				<h2
+					extra-title-section='true'
+					className='text-center text-black text-[24px] leading-normal'
+				>
 					Our best
 				</h2>
 

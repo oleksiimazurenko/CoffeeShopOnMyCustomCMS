@@ -1,9 +1,8 @@
 'use server'
 
 import { PrismaClient } from '@prisma/client'
-import { revalidatePath } from 'next/cache'
 
-const updateDBHTML = async (id: number, content: string) => {
+const updateTextContent = async (id: number, content: string) => {
 	const prisma = new PrismaClient()
 
 	try {
@@ -18,7 +17,6 @@ const updateDBHTML = async (id: number, content: string) => {
 	} catch (error) {
 		console.error('Error updating database:', error)
 	}
-
 }
 
-export { updateDBHTML }
+export { updateTextContent }

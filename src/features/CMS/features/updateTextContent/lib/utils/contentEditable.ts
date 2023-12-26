@@ -1,5 +1,5 @@
-const contentEditableTrue = () => {
-	// Эта функция для секции в которой структура содержит только текстовые ноды для которых мы создадим пользовательский тег и зададим ему contentEditable
+const contentEditable = () => {
+	// Эта функция для текстовых нод, для которых мы создадим пользовательский тег text-editor и зададим ему contentEditable
 	const main = document.querySelector('main')
 	let textNodes: Text[] = []
 	const recursy = (element: Node) => {
@@ -11,7 +11,7 @@ const contentEditableTrue = () => {
 				textNodes.push(node as Text)
 			} else if (node.nodeType === Node.ELEMENT_NODE) {
 				// Проверяем, не содержит ли элемент атрибут no-editable
-				if (!(node as Element).hasAttribute('iteration-editable')) {
+				if (!(node as Element).hasAttribute('product-card-structure')) {
 					recursy(node) // Рекурсивно обрабатываем дочерние узлы
 				}
 			}
@@ -24,7 +24,6 @@ const contentEditableTrue = () => {
 		textNodes.forEach(node => {
 			let parentNode = node.parentNode
 			if (parentNode && parentNode.nodeName.toLowerCase() !== 'text-editor') {
-				console.log(parentNode)
 				const wrapper = document.createElement('text-editor')
 				node.parentNode?.replaceChild(wrapper, node)
 				wrapper.appendChild(node)
@@ -34,4 +33,4 @@ const contentEditableTrue = () => {
 	}
 }
 
-export { contentEditableTrue }
+export { contentEditable }

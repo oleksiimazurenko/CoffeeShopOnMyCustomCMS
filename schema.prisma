@@ -25,10 +25,10 @@ model bestProductItem {
 }
 
 model page {
-  id                   Int    @id @default(autoincrement())
-  name                 String
-  slug                 String
-  type                 String
-  textContentStructure String
-  productCardStructure String
+  id                    Int     @id @default(autoincrement())
+  name                  String
+  slug                  String
+  type                  String
+  textContentStructure  String
+  isDisabled            Boolean
 }

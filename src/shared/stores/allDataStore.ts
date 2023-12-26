@@ -1,17 +1,30 @@
 import { create } from 'zustand'
 
-type menuItemType = {
-  id: number
-  name: string
-  src: string
+//-----------------------------------------------------------------------------------------------------------------------
+
+export type typeCurrentItemsDnD = {
+	id: string
+	content: JSX.Element | string
 }
 
-type storeType = {
-  menuItems: menuItemType[]
-  setMenuItems: (items: menuItemType[]) => void
+export type typeStoreDnD = {
+	currentItems: typeCurrentItemsDnD[]
+	setDnDItems: (items: typeCurrentItemsDnD[]) => void
 }
 
-const useBearStore = create<storeType>((set) => ({
-  menuItems: [],
-  setMenuItems: (items) => set({ menuItems: items})
-}))
+export const useDnDStore = create<typeStoreDnD>(set => ({
+	currentItems: [],
+	setDnDItems: items => set({ currentItems: items })
+})) 
+
+//-----------------------------------------------------------------------------------------------------------------------
+
+export type typeTextContentStore = {
+	currentTextContent: string
+	setTextContent: (items: string) => void
+}
+
+export const useTextContentStore = create<typeTextContentStore>(set => ({
+	currentTextContent: '',
+	setTextContent: items => set({ currentTextContent: items })
+})) 

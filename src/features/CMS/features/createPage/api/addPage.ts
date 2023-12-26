@@ -8,7 +8,8 @@ const addPage = async (
 	slug: string,
 	type: string,
 	textContentStructure: string = 'DEFAULT',
-	productCardStructure: string = 'DEFAULT',
+	iterableSectionTitles: string = 'DEFAULT',
+	isDisabled: boolean = false
 	
 ) => {
 	const prisma = new PrismaClient()
@@ -20,7 +21,8 @@ const addPage = async (
 				slug,
 				type,
 				textContentStructure,
-				productCardStructure
+				iterableSectionTitles,
+				isDisabled
 			},
 		})
 
