@@ -1,28 +1,31 @@
 'use client'
 
 import { typeCurrentItemsDnD, useDnDStore, useTextContentStore } from '@/shared/stores/allDataStore'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
 	DragDropContext,
 	Draggable,
-	DropResult,
-	Droppable,
-} from 'react-beautiful-dnd'
+	DropResult
+} from '@hello-pangea/dnd'
 import { updateTextContent } from '../../../shared/api/updateTextContent'
+import { usePathname } from 'next/navigation'
+import { takeTextContentStructure } from '../../textEditor/utils/takeTextContentStructure'
+import { Droppable } from '@hello-pangea/dnd'
 
 export default function DnD({
-	pageID,
-	initialItems,
+	initialItems
 }: {
-	pageID: number
 	initialItems: typeCurrentItemsDnD[]
 }) {
 	const { currentItems, setDnDItems } = useDnDStore()
-	const { currentTextContent } = useTextContentStore()
+	const { currentTextContent, setTextContent } = useTextContentStore()
+	const [isMounted, setIsMounted] = useState(false)
+	const pathName = usePathname()
 
 	useEffect(() => {
 		// Установка начального состояния
 		setDnDItems(initialItems)
+		setIsMounted(true)
 	}, [initialItems, setDnDItems])
 
 	const onDragEnd = (result: DropResult) => {
@@ -40,7 +43,7 @@ export default function DnD({
 
 		// Здесь также можно сохранить новый порядок в базу данных
 
-		updateTextContent(pageID, currentTextContent)
+		currentTextContent !== '' ? updateTextContent(pathName, currentTextContent) : updateTextContent(pathName, takeTextContentStructure(setTextContent)) 
 	}
 
 	// Функция для переупорядочивания элементов
@@ -56,30 +59,32 @@ export default function DnD({
 		return result
 	}
 
-	console.log(currentItems); 
-
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
-			<Droppable droppableId='droppable'>
-				{provided => (
-					<div {...provided.droppableProps} ref={provided.innerRef}>
-						{currentItems.map((item, index) => (
-							<Draggable key={item.id} draggableId={item.id} index={index}>
-								{provided => (
-									<div
-										ref={provided.innerRef}
-										{...provided.draggableProps}
-										{...provided.dragHandleProps}
-									>
-										{item.content}
-									</div>
-								)}
-							</Draggable>
-						))}
-						{provided.placeholder}
-					</div>
-				)}
-			</Droppable>
+			{isMounted ? 
+				<Droppable droppableId='droppable'>
+					{provided => (
+						<div {...provided.droppableProps} ref={provided.innerRef}>
+							{currentItems.map((item, index) => (
+								<Draggable key={item.id} draggableId={item.id} index={index}>
+									{provided => (
+										<div
+											ref={provided.innerRef}
+											{...provided.draggableProps}
+											{...provided.dragHandleProps}
+										>
+											{item.content}
+										</div>
+									)}
+								</Draggable>
+							))}
+							{provided.placeholder}
+						</div>
+					)}
+				</Droppable>
+				:
+				null
+			}
 		</DragDropContext>
 	)
 }

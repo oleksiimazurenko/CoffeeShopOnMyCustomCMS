@@ -14,21 +14,14 @@ model productItem {
   title   String
   country String
   price   String
-}
-
-model bestProductItem {
-  id    Int    @id @default(autoincrement())
-  src   String
-  alt   String
-  title String
-  price String
+  type    String
 }
 
 model page {
-  id                    Int     @id @default(autoincrement())
-  name                  String
-  slug                  String
-  type                  String
-  textContentStructure  String
-  isDisabled            Boolean
+  id                   Int     @unique
+  name                 String
+  slug                 String  @id @unique
+  type                 String
+  textContentStructure String
+  isDisabled           Boolean
 }

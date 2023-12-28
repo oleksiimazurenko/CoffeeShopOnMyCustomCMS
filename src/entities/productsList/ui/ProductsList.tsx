@@ -9,10 +9,10 @@ import {
 	CardHeader,
 } from '@/shared/ui/card'
 
-export default function ProductsList({ data, type }: propsProductsList) {
+export default function ProductsList({ data, pageType }: propsProductsList) {
 	return (
-		<div iterable-structure='true'>
-			{data.map(({ id, src, alt, title, country, price }: productItem) => (
+		<>
+			{data.filter(({type}) => type === pageType).map(({ id, src, alt, title, country, price }: productItem) => (
 				<Card
 					key={id}
 					className='rounded-8 bg-slate-50/90 p-[20px] w-[220px] h-[240px]'
@@ -31,7 +31,7 @@ export default function ProductsList({ data, type }: propsProductsList) {
 						<CardDescription className='text-black text-center text-[14px] font-normal'>
 							{title}
 						</CardDescription>
-						{type === 'main' && (
+						{pageType === 'normal' && (
 							<CardDescription className='mt-[14px] text-black text-center text-[14px] font-normal'>
 								{country}
 							</CardDescription>
@@ -43,6 +43,6 @@ export default function ProductsList({ data, type }: propsProductsList) {
 					</CardFooter>
 				</Card>
 			))}
-		</div>
+		</>
 	)
 }

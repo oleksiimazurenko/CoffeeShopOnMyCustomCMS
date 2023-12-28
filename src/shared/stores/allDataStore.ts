@@ -1,10 +1,11 @@
+import { ReactNode } from 'react'
 import { create } from 'zustand'
 
 //-----------------------------------------------------------------------------------------------------------------------
 
 export type typeCurrentItemsDnD = {
 	id: string
-	content: JSX.Element | string
+	content: JSX.Element | ReactNode | string
 }
 
 export type typeStoreDnD = {
@@ -27,4 +28,16 @@ export type typeTextContentStore = {
 export const useTextContentStore = create<typeTextContentStore>(set => ({
 	currentTextContent: '',
 	setTextContent: items => set({ currentTextContent: items })
+})) 
+
+//-----------------------------------------------------------------------------------------------------------------------
+
+export type typeIsAuthorizedStore = {
+	isAuthorized: boolean
+	setIsAuthorized: (value: boolean) => void
+}
+
+export const useIsAuthorizedStore = create<typeIsAuthorizedStore>(set => ({
+	isAuthorized: true,
+	setIsAuthorized: value => set({ isAuthorized: value })
 })) 

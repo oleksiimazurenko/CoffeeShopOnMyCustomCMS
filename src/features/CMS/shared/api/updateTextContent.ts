@@ -2,18 +2,17 @@
 
 import { PrismaClient } from '@prisma/client'
 
-const updateTextContent = async (id: number, content: string) => {
+const updateTextContent = async (slug: string, content: string) => {
 	const prisma = new PrismaClient()
 
 	try {
 		await prisma.page.update({
-			where: { id: id },
+			where: { slug: slug },
 			data: { textContentStructure: content },
 		})
 
 		await prisma.$disconnect()
 
-		console.log('Update successful')
 	} catch (error) {
 		console.error('Error updating database:', error)
 	}

@@ -6,11 +6,12 @@ export type productItem = {
 	title: string
 	country?: string
 	price: string
+	type: string
 }
 
 export type productList = productItem[]
 
 export type propsProductsList = {
 	data: productList
-	type: 'main' | 'best'
+	pageType: 'normal' | 'best'
 }

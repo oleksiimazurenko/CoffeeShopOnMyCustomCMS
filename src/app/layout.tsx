@@ -23,10 +23,10 @@ export default async function RootLayout({
 	return (
 		<html lang='en'>
 			<body className={merienda.className}>
-				<Header />
+				{/* <Header /> */}
 				<main className='max-w-[2100px] m-auto'>{children}</main>
 				<Footer />
-				<InitialisationCMS />
+				<InitialisationCMS /> 
 			</body>
 		</html>
 	)
