@@ -1,6 +1,5 @@
-import { getPages } from '@/shared/api/getPages'
 import { PrismaClient, page } from '@prisma/client'
-
+import { getPages } from '@/shared/api/getPages'
 
 export const dynamicParams = false //почему-то не работает при production сборке
 

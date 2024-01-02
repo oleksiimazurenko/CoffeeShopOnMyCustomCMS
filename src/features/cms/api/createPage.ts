@@ -3,12 +3,11 @@
 import { PrismaClient } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 
-const addPage = async (
+const createPage = async (
 	name: string,
 	slug: string,
 	type: string,
 	textContentStructure: string = 'DEFAULT',
-	iterableSectionTitles: string = 'DEFAULT',
 	isDisabled: boolean = false
 	
 ) => {
@@ -21,7 +20,6 @@ const addPage = async (
 				slug,
 				type,
 				textContentStructure,
-				iterableSectionTitles,
 				isDisabled
 			},
 		})
@@ -37,4 +35,4 @@ const addPage = async (
 	revalidatePath('/', 'layout')
 }
 
-export { addPage }
+export { createPage }

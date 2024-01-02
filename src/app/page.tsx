@@ -1,12 +1,11 @@
-import ProductsList from '@/entities/productsList/ui/ProductsList'
-import DnD from '@/features/CMS/features/dnd/ui/DnD'
-import TextEditor from '@/features/CMS/features/textEditor/ui/textEditor'
+import { ProductsList } from '@/entities/productsList'
+import { DnD, TextEditor } from '@/features/cms'
 import { getPages } from '@/shared/api/getPages'
 import { getProductsList } from '@/shared/api/getProductsList'
-import { typeCurrentItemsDnD } from '@/shared/stores/allDataStore'
-import AboutUs from '@/widgets/aboutUs/ui/AboutUs'
-import BestProducts from '@/widgets/bestProducts/ui/BestProducts'
-import IntroHome from '@/widgets/introHome/ui/IntroHome'
+import { typeCurrentItemsDnD } from '@/shared/store/store'
+import { AboutUs } from '@/widgets/aboutUs'
+import { BestProducts } from '@/widgets/bestProducts'
+import { IntroHome } from '@/widgets/introHome'
 import parse, {
 	DOMNode,
 	Element,
@@ -38,29 +37,37 @@ export default async function Home() {
 	]
 
 	// В данный момент не хватает знаний как вынести эту функцию в отдельный файл или как её сделать универсальной
-	const parseHTMLToReactComponents = (
-		htmlString: string
-	): React.ReactNode => {
+	const parseHTMLToReactComponents = (htmlString: string): React.ReactNode => {
 		const options: HTMLReactParserOptions = {
 			replace: domNode => {
-
-				if (domNode instanceof Element && domNode.name === 'div' && domNode.attribs['data-texteditor'] !== undefined) {
-					const domNodes: DOMNode[] = Array.from(domNode.children) as unknown as DOMNode[];
-					const children = domToReact(domNodes, options);
-					return <TextEditor>{children}</TextEditor>;
-				} 
-
-				if (domNode.type === 'text' && domNode.data.includes('##UNIQUE_ITERABLE_CONTENT##')) {
-					// Заменяем текстовый узел на компонент ProductsList
-					return <ProductsList data={dataBestProductItem} pageType='best' />;
+				if (
+					domNode instanceof Element &&
+					domNode.name === 'div' &&
+					domNode.attribs['data-texteditor'] !== undefined
+				) {
+					const domNodes: DOMNode[] = Array.from(
+						domNode.children
+					) as unknown as DOMNode[]
+					const children = domToReact(domNodes, options)
+					return <TextEditor>{children}</TextEditor>
 				}
 
+				if (
+					domNode.type === 'text' &&
+					domNode.data.includes('##UNIQUE_ITERABLE_CONTENT##')
+				) {
+					// Заменяем текстовый узел на компонент ProductsList
+					return <ProductsList data={dataBestProductItem} pageType='best' />
+				}
 			},
-		};
-		return parse(htmlString, options);
-	};
+		}
+		return parse(htmlString, options)
+	}
 
-	const convertFromStrToObjArr = (structure: string | undefined, errorPlaceholder: string)  => {
+	const convertFromStrToObjArr = (
+		structure: string | undefined,
+		errorPlaceholder: string
+	) => {
 		const divErrorPlaceholder = `<div className="text-center text-6xl pt-[120px] pb-[60px] bg-yellow-500">${errorPlaceholder}</div>`
 		const itemsArray = structure
 			? structure.split('##UNIQUE_DIVIDER##')
@@ -68,15 +75,16 @@ export default async function Home() {
 		return itemsArray
 	}
 
-	const resultArrayObjectsForDnD: typeCurrentItemsDnD[] = convertFromStrToObjArr(dataPage?.textContentStructure, 'data base empty')
-	.map(item => parseHTMLToReactComponents(item))
-	.map((item, i) => ({
-			id: initialArrayObjectsForDnD[i].id,
-			content: item,
-		})
-	)
+	const resultArrayObjectsForDnD: typeCurrentItemsDnD[] =
+		convertFromStrToObjArr(dataPage?.textContentStructure, 'data base empty')
+			.map(item => parseHTMLToReactComponents(item))
+			.map((item, i) => ({
+				id: initialArrayObjectsForDnD[i].id,
+				content: item,
+			}))
 
-	if (dataPage?.textContentStructure === 'DEFAULT') return <DnD initialItems={initialArrayObjectsForDnD} />
+	if (dataPage?.textContentStructure === 'DEFAULT')
+		return <DnD initialItems={initialArrayObjectsForDnD} />
 
-	return <DnD initialItems={resultArrayObjectsForDnD}/>
+	return <DnD initialItems={resultArrayObjectsForDnD} />
 }

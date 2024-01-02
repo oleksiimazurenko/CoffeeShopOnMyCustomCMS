@@ -1,0 +1,1 @@
+export { IntroHome } from './ui/introHome'

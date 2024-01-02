@@ -1,10 +1,10 @@
-import Navbar from '@/features/navbar/ui/Navbar'
+import { CreatePage, DeletePage } from '@/features/cms'
+import { Navbar } from '@/features/navbar'
 
-export default async function Header() {
-
+export async function Header() {
 	return (
 		<header className='absolute top-0 left-1/2 transform -translate-x-1/2 py-[30px] w-full'>
-			<Navbar type='white'/>
+			<Navbar type='white' DeletePage={DeletePage} CreatePage={CreatePage}/>
 		</header>
 	)
 }

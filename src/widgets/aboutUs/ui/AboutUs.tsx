@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 
-export default function AboutUs() {
+export function AboutUs() {
 	return (
 		<section className="pt-[80px] pb-[100px]">
 			<div className="container flex flex-col justify-center items-center">

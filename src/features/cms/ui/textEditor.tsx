@@ -1,17 +1,14 @@
 'use client'
 
-import { updateTextContent } from '@/features/CMS/shared/api/updateTextContent'
-import {
-	useIsAuthorizedStore,
-	useTextContentStore,
-} from '@/shared/stores/allDataStore'
+import { updateTextContent } from '@/features/cms/api/updateTextContent'
+import { useIsAuthorizedStore, useTextContentStore } from '@/shared/store/store'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef } from 'react'
-import { takeTextContentStructure } from '../utils/takeTextContentStructure'
 
 import cn from 'classnames'
+import { takeTextContentStructure } from '../model/takeTextContentStructure'
 
-export default function TextEditor({
+export function TextEditor({
 	children,
 }: {
 	children: React.ReactNode | JSX.Element | string
@@ -37,7 +34,7 @@ export default function TextEditor({
 			{isAuthorized ? (
 				<div
 					className={cn('', {
-						['cursor-pointer']: isAuthorized === true
+						['cursor-pointer']: isAuthorized === true,
 					})}
 					data-texteditor={isAuthorized}
 					contentEditable={true}

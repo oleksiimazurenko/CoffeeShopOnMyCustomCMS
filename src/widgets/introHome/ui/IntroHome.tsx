@@ -1,8 +1,8 @@
-import TextEditor from '@/features/CMS/features/textEditor/ui/textEditor'
+import { TextEditor } from '@/features/cms'
 import { Button } from '@/shared/ui/button'
 import Image from 'next/image'
 
-export default function IntroHome() {
+export function IntroHome() {
 	return (
 		<section className='bg-no-repeat bg-center bg-cover bg-desktop h-[640px]'>
 			<div className='container flex flex-col justify-center items-center pt-[180px]'>
@@ -23,7 +23,7 @@ export default function IntroHome() {
 					<TextEditor>Want to try our beans?</TextEditor>
 				</h3>
 				<Button className='mt-4 border-2 border-white border-opacity-50 rounded-sm bg-transparent shadow-md px-10 py-2 text-[14px] font-bold text-slate-50 hover:bg-slate-50 hover:text-slate-800'>
-				<TextEditor>More</TextEditor>
+					<TextEditor>More</TextEditor>
 				</Button>
 			</div>
 		</section>

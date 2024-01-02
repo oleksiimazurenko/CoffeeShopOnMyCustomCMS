@@ -1,22 +1,22 @@
 'use client'
 
-import { typeCurrentItemsDnD, useDnDStore, useTextContentStore } from '@/shared/stores/allDataStore'
-import { useEffect, useState } from 'react'
+import {
+	typeCurrentItemsDnD,
+	useDnDStore,
+	useTextContentStore,
+} from '@/shared/store/store'
 import {
 	DragDropContext,
 	Draggable,
-	DropResult
+	DropResult,
+	Droppable,
 } from '@hello-pangea/dnd'
-import { updateTextContent } from '../../../shared/api/updateTextContent'
 import { usePathname } from 'next/navigation'
-import { takeTextContentStructure } from '../../textEditor/utils/takeTextContentStructure'
-import { Droppable } from '@hello-pangea/dnd'
+import { useEffect, useState } from 'react'
+import { updateTextContent } from '../api/updateTextContent'
+import { takeTextContentStructure } from '../model/takeTextContentStructure'
 
-export default function DnD({
-	initialItems
-}: {
-	initialItems: typeCurrentItemsDnD[]
-}) {
+export function DnD({ initialItems }: { initialItems: typeCurrentItemsDnD[] }) {
 	const { currentItems, setDnDItems } = useDnDStore()
 	const { currentTextContent, setTextContent } = useTextContentStore()
 	const [isMounted, setIsMounted] = useState(false)
@@ -43,7 +43,9 @@ export default function DnD({
 
 		// Здесь также можно сохранить новый порядок в базу данных
 
-		currentTextContent !== '' ? updateTextContent(pathName, currentTextContent) : updateTextContent(pathName, takeTextContentStructure(setTextContent)) 
+		currentTextContent !== ''
+			? updateTextContent(pathName, currentTextContent)
+			: updateTextContent(pathName, takeTextContentStructure(setTextContent))
 	}
 
 	// Функция для переупорядочивания элементов
@@ -61,7 +63,7 @@ export default function DnD({
 
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
-			{isMounted ? 
+			{isMounted ? (
 				<Droppable droppableId='droppable'>
 					{provided => (
 						<div {...provided.droppableProps} ref={provided.innerRef}>
@@ -82,9 +84,7 @@ export default function DnD({
 						</div>
 					)}
 				</Droppable>
-				:
-				null
-			}
+			) : null}
 		</DragDropContext>
 	)
 }

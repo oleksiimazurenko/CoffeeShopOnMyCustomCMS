@@ -15,7 +15,7 @@ import {
 } from '@/shared/ui/form'
 import { Input } from '@/shared/ui/input'
 
-import { addPage } from '../api/addPage'
+import { createPage } from '../api/createPage'
 
 import {
 	Dialog,
@@ -24,14 +24,25 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/shared/ui/dialog'
-import { PlusCircle, PlusSquare } from 'lucide-react'
+import { PlusSquare } from 'lucide-react'
 
 const formSchema = z.object({
 	name: z.string().min(2).max(50),
 	slug: z.string().min(2).max(50),
 })
 
-export default function CreatePage({classNameTrigger, classNameContent}: {classNameTrigger?: string, classNameContent?: string}) {
+type CreatePageProps = {
+  classNameTrigger?: string;
+  classNameContent?: string;
+};
+
+export function CreatePage({
+	classNameTrigger,
+	classNameContent,
+}: {
+	classNameTrigger?: string
+	classNameContent?: string
+}) {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -41,15 +52,19 @@ export default function CreatePage({classNameTrigger, classNameContent}: {classN
 	})
 
 	function onSubmit({ name, slug }: z.infer<typeof formSchema>) {
-		addPage(name, slug, 'dynamic', )
+		createPage(name, slug, 'dynamic')
 		form.reset()
 	}
 
 	return (
 		<Dialog>
-			<DialogTrigger className={`${classNameTrigger}`}><PlusSquare /></DialogTrigger>
+			<DialogTrigger className={`${classNameTrigger}`}>
+				<PlusSquare />
+			</DialogTrigger>
 
-			<DialogContent className={`px-[10px] py-[30px] min-w-[370px] ${classNameContent}`}>
+			<DialogContent
+				className={`px-[10px] py-[30px] min-w-[370px] ${classNameContent}`}
+			>
 				<DialogHeader>
 					<DialogTitle className='text-center'>Create new page</DialogTitle>
 				</DialogHeader>

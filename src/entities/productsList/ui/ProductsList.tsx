@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { productItem, propsProductsList } from '../types/types'
+import { productItem, propsProductsList } from '../model/types'
 
 import {
 	Card,
@@ -9,7 +9,7 @@ import {
 	CardHeader,
 } from '@/shared/ui/card'
 
-export default function ProductsList({ data, pageType }: propsProductsList) {
+export function ProductsList({ data, pageType }: propsProductsList) {
 	return (
 		<>
 			{data.filter(({type}) => type === pageType).map(({ id, src, alt, title, country, price }: productItem) => (

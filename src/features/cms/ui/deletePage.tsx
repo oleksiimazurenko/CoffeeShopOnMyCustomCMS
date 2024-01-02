@@ -1,6 +1,5 @@
 'use client'
 
-import { isDisabledPage } from '@/features/navbar/api/isDisabledPage'
 import { Button } from '@/shared/ui/button'
 import {
 	Dialog,
@@ -13,8 +12,9 @@ import {
 import { XCircle } from 'lucide-react'
 import Link from 'next/link'
 import { deletePage } from '../api/deletePage'
+import { togglePageDisableStatus } from '@/shared/api/togglePageDisableStatus'
 
-export default function DeletePage({
+export function DeletePage({
 	id,
 	typePage,
 }: {
@@ -26,6 +26,7 @@ export default function DeletePage({
 			<DialogTrigger className='absolute top-[-5px] right-0 animate-pulse'>
 				<XCircle className='w-[15px] h-[15px] hover:scale-125 transition-all' />
 			</DialogTrigger>
+
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle className='text-center'>
@@ -34,7 +35,11 @@ export default function DeletePage({
 				</DialogHeader>
 
 				<DialogClose asChild>
-					<Button type='button' variant='secondary' className='hover:bg-slate-200/80'>
+					<Button
+						type='button'
+						variant='secondary'
+						className='hover:bg-slate-200/80'
+					>
 						Close
 					</Button>
 				</DialogClose>
@@ -43,7 +48,7 @@ export default function DeletePage({
 						className='bg-red-400 hover:bg-red-500'
 						onClick={() => {
 							if (typePage === 'static') {
-								isDisabledPage(id, true)
+								togglePageDisableStatus(id, true)
 							}
 							if (typePage === 'dynamic') {
 								deletePage(id)

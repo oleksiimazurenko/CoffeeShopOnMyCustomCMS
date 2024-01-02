@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function HeadImageSection() {
+export function HeadImageSection() {
 	return (
 		<section className=''>
 			<h2></h2>

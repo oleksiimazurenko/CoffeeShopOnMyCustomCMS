@@ -1,12 +1,14 @@
-import DeletePage from '@/features/CMS/features/deletePage/ui/DeletePage'
 import { getPages } from '@/shared/api/getPages'
 import cn from 'classnames'
 import Image from 'next/image'
 import Link from 'next/link'
-import { navbarPropsType } from '../types/types'
-import CreatePage from '@/features/CMS/features/createPage/ui/CreatePage'
+import { navbarPropsType } from '../model/types'
 
-export default async function Navbar({ type }: navbarPropsType) {
+export async function Navbar({
+	type,
+	DeletePage,
+	CreatePage,
+}: navbarPropsType) {
 	const dataMenuItems = await getPages()
 
 	return (
@@ -41,7 +43,7 @@ export default async function Navbar({ type }: navbarPropsType) {
 							/>
 						</li>
 					))}
-					<CreatePage classNameTrigger='ml-[20px] animate-pulse hover:scale-125 transition-all'/>
+				<CreatePage classNameTrigger='ml-[20px] animate-pulse hover:scale-125 transition-all' />
 			</ul>
 		</nav>
 	)

@@ -3,10 +3,10 @@
 import { PrismaClient } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 
-const isDisabledPage = async (id: number, isDisabled: boolean) => {
+const togglePageDisableStatus = async (id: number, isDisabled: boolean) => {
 
 	const prisma = new PrismaClient();
-  const updatedExample = await prisma.page.update({
+  await prisma.page.update({
     where: { id: id },
     data: { isDisabled: isDisabled }
   });
@@ -15,4 +15,4 @@ const isDisabledPage = async (id: number, isDisabled: boolean) => {
 
 }
 
-export {isDisabledPage}
+export { togglePageDisableStatus }

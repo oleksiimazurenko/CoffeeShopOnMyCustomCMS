@@ -1,7 +1,7 @@
-import ProductsList from '@/entities/productsList/ui/ProductsList'
-import TextEditor from '@/features/CMS/features/textEditor/ui/textEditor'
+import { ProductsList } from '@/entities/productsList'
+import { TextEditor } from '@/features/cms'
 import { getProductsList } from '@/shared/api/getProductsList'
-export default async function BestProducts() {
+export async function BestProducts() {
 	const data = await getProductsList()
 
 	return (
@@ -14,7 +14,10 @@ export default async function BestProducts() {
 					<TextEditor>Our best</TextEditor>
 				</h2>
 
-				<div iterable-structure='true' className='grid grid-cols-[repeat(3,minmax(0,220px))] justify-center justify-items-center items-center gap-[70px] mt-[40px]'>
+				<div
+					iterable-structure='true'
+					className='grid grid-cols-[repeat(3,minmax(0,220px))] justify-center justify-items-center items-center gap-[70px] mt-[40px]'
+				>
 					<ProductsList data={data} pageType='best' />
 				</div>
 			</div>
