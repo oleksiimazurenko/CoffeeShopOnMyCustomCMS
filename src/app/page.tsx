@@ -23,15 +23,15 @@ export default async function Home() {
 
 	const initialArrayObjectsForDnD: typeCurrentItemsDnD[] = [
 		{
-			id: 'IntroHome-1',
+			id: 'item-1',
 			content: <div text-content-structure='true'>{<IntroHome />}</div>,
 		},
 		{
-			id: 'AboutUs-2',
+			id: 'item-2',
 			content: <div text-content-structure='true'>{<AboutUs />}</div>,
 		},
 		{
-			id: 'BestProducts-3',
+			id: 'item-3',
 			content: <div text-content-structure='true'>{<BestProducts />}</div>,
 		},
 	]
@@ -40,9 +40,10 @@ export default async function Home() {
 	const parseHTMLToReactComponents = (htmlString: string): React.ReactNode => {
 		const options: HTMLReactParserOptions = {
 			replace: domNode => {
+
 				if (
 					domNode instanceof Element &&
-					domNode.name === 'div' &&
+					domNode.name === 'span' &&
 					domNode.attribs['data-texteditor'] !== undefined
 				) {
 					const domNodes: DOMNode[] = Array.from(

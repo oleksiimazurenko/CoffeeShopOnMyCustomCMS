@@ -3,7 +3,6 @@
 import {
 	typeCurrentItemsDnD,
 	useDnDStore,
-	useTextContentStore,
 } from '@/shared/store/store'
 import {
 	DragDropContext,
@@ -19,9 +18,7 @@ import { takeTextContentStructure } from '../model/takeTextContentStructure'
 
 export function DnD({ initialItems, ChangeBackground }: { initialItems: typeCurrentItemsDnD[], ChangeBackground: () => JSX.Element }) {
 
-
 	const { currentItems, setDnDItems } = useDnDStore()
-	const { currentTextContent, setTextContent } = useTextContentStore()
 	const [isMounted, setIsMounted] = useState(false)
 	const pathName = usePathname()
 
@@ -30,6 +27,13 @@ export function DnD({ initialItems, ChangeBackground }: { initialItems: typeCurr
 		setDnDItems(initialItems)
 		setIsMounted(true)
 	}, [initialItems, setDnDItems])
+
+	useEffect(() => {
+		if(takeTextContentStructure() !== '') {
+			// Записываем изменения в базу данных
+			updateTextContent(pathName, takeTextContentStructure()) 
+		}
+	}, [currentItems])
 
 	const onDragEnd = (result: DropResult) => {
 		if (!result.destination) {
@@ -44,11 +48,6 @@ export function DnD({ initialItems, ChangeBackground }: { initialItems: typeCurr
 
 		setDnDItems(reorderedItems)
 
-		// Здесь также можно сохранить новый порядок в базу данных
-
-		currentTextContent !== ''
-			? updateTextContent(pathName, currentTextContent)
-			: updateTextContent(pathName, takeTextContentStructure(setTextContent))
 	}
 
 	// Функция для переупорядочивания элементов

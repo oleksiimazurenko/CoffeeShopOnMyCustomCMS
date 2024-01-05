@@ -1,7 +1,7 @@
 'use client'
 
 import { updateTextContent } from '@/features/cms/api/updateTextContent'
-import { useIsAuthorizedStore, useTextContentStore } from '@/shared/store/store'
+import { useIsAuthorizedStore } from '@/shared/store/store'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef } from 'react'
 
@@ -15,8 +15,7 @@ export function TextEditor({
 }) {
 	const { isAuthorized } = useIsAuthorizedStore()
 	const contentRef = useRef<HTMLDivElement>(null)
-	const path = usePathname()
-	const { setTextContent } = useTextContentStore()
+	const pathName = usePathname()
 
 	useEffect(() => {
 		if (contentRef.current && typeof children === 'string') {
@@ -25,14 +24,14 @@ export function TextEditor({
 	}, [children])
 
 	const handleInput = () => {
-		const combinedString = takeTextContentStructure(setTextContent)
-		updateTextContent(path, combinedString) // Отправляем данные на сервер
+		const combinedString = takeTextContentStructure()
+		updateTextContent(pathName, combinedString) // Отправляем данные на сервер
 	}
 
 	return (
 		<>
 			{isAuthorized ? (
-				<div
+				<span
 					className={cn('', {
 						['cursor-pointer']: isAuthorized === true,
 					})}

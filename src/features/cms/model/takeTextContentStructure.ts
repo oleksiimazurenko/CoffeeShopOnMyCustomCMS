@@ -1,5 +1,5 @@
 const takeTextContentStructure = (
-	setTextContent: (items: string) => void
+	
 ): string => {
 	const main = document.querySelector('main')
 
@@ -29,8 +29,6 @@ const takeTextContentStructure = (
 		// 	'Сформированная строка перед возвращением из функции:',
 		// 	combinedString
 		// )
-
-		setTextContent(combinedString) // Добавляем актуальные данные в Store (Zustand)
 
 		return combinedString
 	}

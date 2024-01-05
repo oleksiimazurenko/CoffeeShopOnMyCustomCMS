@@ -20,15 +20,15 @@ export const useDnDStore = create<typeStoreDnD>(set => ({
 
 //-----------------------------------------------------------------------------------------------------------------------
 
-export type typeTextContentStore = {
-	currentTextContent: string
-	setTextContent: (items: string) => void
-}
+// export type typeTextContentStore = {
+// 	currentTextContent: string
+// 	setTextContent: (items: string) => void
+// }
 
-export const useTextContentStore = create<typeTextContentStore>(set => ({
-	currentTextContent: '',
-	setTextContent: items => set({ currentTextContent: items })
-})) 
+// export const useTextContentStore = create<typeTextContentStore>(set => ({
+// 	currentTextContent: '',
+// 	setTextContent: items => set({ currentTextContent: items })
+// })) 
 
 //-----------------------------------------------------------------------------------------------------------------------
 
