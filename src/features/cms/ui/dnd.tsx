@@ -11,12 +11,15 @@ import {
 	DropResult,
 	Droppable,
 } from '@hello-pangea/dnd'
+import { GripVertical } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { updateTextContent } from '../api/updateTextContent'
 import { takeTextContentStructure } from '../model/takeTextContentStructure'
 
-export function DnD({ initialItems }: { initialItems: typeCurrentItemsDnD[] }) {
+export function DnD({ initialItems, ChangeBackground }: { initialItems: typeCurrentItemsDnD[], ChangeBackground: () => JSX.Element }) {
+
+
 	const { currentItems, setDnDItems } = useDnDStore()
 	const { currentTextContent, setTextContent } = useTextContentStore()
 	const [isMounted, setIsMounted] = useState(false)
@@ -73,8 +76,15 @@ export function DnD({ initialItems }: { initialItems: typeCurrentItemsDnD[] }) {
 										<div
 											ref={provided.innerRef}
 											{...provided.draggableProps}
-											{...provided.dragHandleProps}
+											className='relative'
 										>
+											<div
+												{...provided.dragHandleProps}
+												className='absolute bottom-8 right-6 rounded animate-pulse'
+											>
+												<GripVertical size={48} strokeWidth={0.5} className='hover:scale-125 transition-all'/>
+											</div>
+											<ChangeBackground/>
 											{item.content}
 										</div>
 									)}

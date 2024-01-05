@@ -1,9 +1,8 @@
-import { getPages } from '@/shared/api/getPages'
+import { Footer } from '@/widgets/footer'
+import { Header } from '@/widgets/header'
 import type { Metadata } from 'next'
 import { Merienda } from 'next/font/google'
 import './globals.css'
-import { Header } from '@/widgets/header'
-import { Footer } from '@/widgets/footer'
 
 const merienda = Merienda({ subsets: ['latin'] })
 
@@ -12,12 +11,11 @@ export const metadata: Metadata = {
 	description: 'Coffee Shop',
 }
 
-export default async function RootLayout({
+export default function RootLayout({
 	children,
 }: {
 	children: React.ReactNode
 }) {
-	const pages = await getPages()
 
 	return (
 		<html lang='en'>

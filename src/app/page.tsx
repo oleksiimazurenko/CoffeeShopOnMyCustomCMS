@@ -1,5 +1,5 @@
 import { ProductsList } from '@/entities/productsList'
-import { DnD, TextEditor } from '@/features/cms'
+import { ChangeBackground, DnD, TextEditor } from '@/features/cms'
 import { getPages } from '@/shared/api/getPages'
 import { getProductsList } from '@/shared/api/getProductsList'
 import { typeCurrentItemsDnD } from '@/shared/store/store'
@@ -84,7 +84,7 @@ export default async function Home() {
 			}))
 
 	if (dataPage?.textContentStructure === 'DEFAULT')
-		return <DnD initialItems={initialArrayObjectsForDnD} />
+		return <DnD initialItems={initialArrayObjectsForDnD} ChangeBackground={ChangeBackground}/>
 
-	return <DnD initialItems={resultArrayObjectsForDnD} />
+	return <DnD initialItems={resultArrayObjectsForDnD} ChangeBackground={ChangeBackground}/>
 }
