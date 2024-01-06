@@ -3,8 +3,13 @@ import { PrimaryButton } from '@/features/primaryButton'
 import Image from 'next/image'
 
 export function IntroHome() {
+	// const backgroundUrl = getBackgroundURL()
 	return (
-		<section className='bg-no-repeat bg-center bg-cover bg-desktop h-[640px]'>
+		<section
+			data-background-image-element={true}
+			className='h-[640px] bg-no-repeat bg-center bg-cover'
+			style={{ backgroundImage: `url(/firstSectionBG.jpg)` }}
+		>
 			<div className='container flex flex-col justify-center items-center pt-[180px]'>
 				<h1 className='text-stroke-05-black text-shadow-xl text-slate-50 font-bold text-4xl transition-all duration-1000 ease-in'>
 					<TextEditor>Everything You Love About Coffee</TextEditor>

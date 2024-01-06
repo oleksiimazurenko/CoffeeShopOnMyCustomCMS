@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react'
 import { updateTextContent } from '../api/updateTextContent'
 import { takeTextContentStructure } from '../model/takeTextContentStructure'
 
-export function DnD({ initialItems, ChangeBackground }: { initialItems: typeCurrentItemsDnD[], ChangeBackground: () => JSX.Element }) {
+export function DnD({ initialItems, UploadImageModal }: { initialItems: typeCurrentItemsDnD[], UploadImageModal: () => JSX.Element }) {
 
 	const { currentItems, setDnDItems } = useDnDStore()
 	const [isMounted, setIsMounted] = useState(false)
@@ -83,7 +83,7 @@ export function DnD({ initialItems, ChangeBackground }: { initialItems: typeCurr
 											>
 												<GripVertical size={48} strokeWidth={0.5} className='hover:scale-125 transition-all'/>
 											</div>
-											<ChangeBackground/>
+											<UploadImageModal/>
 											{item.content}
 										</div>
 									)}

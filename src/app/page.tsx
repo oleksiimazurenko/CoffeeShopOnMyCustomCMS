@@ -1,5 +1,5 @@
 import { ProductsList } from '@/entities/productsList'
-import { ChangeBackground, DnD, TextEditor } from '@/features/cms'
+import { UploadImageModal, DnD, TextEditor } from '@/features/cms'
 import { getPages } from '@/shared/api/getPages'
 import { getProductsList } from '@/shared/api/getProductsList'
 import { typeCurrentItemsDnD } from '@/shared/store/store'
@@ -55,7 +55,7 @@ export default async function Home() {
 
 				if (
 					domNode.type === 'text' &&
-					domNode.data.includes('##UNIQUE_ITERABLE_CONTENT##')
+					domNode.data.includes('##UNIQUE_ITERABLE_CONTENT__PRODUCT_LIST##')
 				) {
 					// Заменяем текстовый узел на компонент ProductsList
 					return <ProductsList data={dataBestProductItem} pageType='best' />
@@ -85,7 +85,7 @@ export default async function Home() {
 			}))
 
 	if (dataPage?.textContentStructure === 'DEFAULT')
-		return <DnD initialItems={initialArrayObjectsForDnD} ChangeBackground={ChangeBackground}/>
+		return <DnD initialItems={initialArrayObjectsForDnD} UploadImageModal={UploadImageModal}/>
 
-	return <DnD initialItems={resultArrayObjectsForDnD} ChangeBackground={ChangeBackground}/>
+	return <DnD initialItems={resultArrayObjectsForDnD} UploadImageModal={UploadImageModal}/>
 }

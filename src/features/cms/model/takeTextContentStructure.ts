@@ -1,6 +1,4 @@
-const takeTextContentStructure = (
-	
-): string => {
+const takeTextContentStructure = (): string => {
 	const main = document.querySelector('main')
 
 	const textContentStructureElements = main
@@ -14,8 +12,9 @@ const takeTextContentStructure = (
 
 			// Найти и заменить дочерний элемент в клонированном элементе
 			const childToReplace = clonedElement.querySelector('[iterable-structure]')
+
 			if (childToReplace) {
-				childToReplace.textContent = '##UNIQUE_ITERABLE_CONTENT##';
+				childToReplace.textContent = '##UNIQUE_ITERABLE_CONTENT__PRODUCT_LIST##'
 			}
 
 			// Возвращаем внешний HTML клонированного (и измененного) элемента

@@ -3,7 +3,11 @@ import Image from 'next/image'
 
 export function AboutUs() {
 	return (
-		<section className='pt-[80px] pb-[100px]'>
+		<section
+			data-background-image-element={true}
+			style={{ backgroundImage: `url()` }}
+			className='pt-[80px] pb-[100px]'
+		>
 			<div className='container flex flex-col justify-center items-center'>
 				<h2 className='text-black text-2xl'>
 					<TextEditor>About Us</TextEditor>

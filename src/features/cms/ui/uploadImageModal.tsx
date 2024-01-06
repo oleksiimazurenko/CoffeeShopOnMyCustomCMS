@@ -24,6 +24,10 @@ import {
 } from '@/shared/ui/dialog'
 import { Image, ImagePlus } from 'lucide-react'
 import { useState } from 'react'
+import React from 'react'
+import { takeTextContentStructure } from '../model/takeTextContentStructure'
+import { updateTextContent } from '../api/updateTextContent'
+import { usePathname } from 'next/navigation'
 // import { uploadFile } from '@/shared/api/uploadFile'
 
 //---------------------------------------------------------------
@@ -65,31 +69,61 @@ const getErrorMessage = (error: unknown): string => {
 }
 
 //---------------------------------------------------------------
-// Функция для изменения фона секции
+// Компонент модального окна для загрузки фото на сервер
 //---------------------------------------------------------------
-export function ChangeBackground() {
+export function UploadImageModal() {
 	const [fileName, setFileName] = useState<JSX.Element | string>('')
+	const closedDOMElement = React.useRef<((fileName: string) => void) | null>(null)
 	const [responseMessage, setResponseMessage] = useState<JSX.Element | string>(
 		''
 	)
+	const pathName = usePathname()
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 	})
+
+	//---------------------------------------------------------------------------------------
+	//Длеаем замыкание для сохранения ссылки на ДОМ элемент для последующей модификации
+	//---------------------------------------------------------------------------------------
+	const elementDOMClosure = (
+		e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+	) => {
+		const parentElement = e.currentTarget.parentElement
+
+		const backgroundElement = parentElement
+			?.querySelector('[text-content-structure]')
+			?.querySelector('[data-background-image-element]') as HTMLElement
+
+		if (backgroundElement) {
+			return (fileName: string) => {
+				backgroundElement.style.backgroundImage = `url(/uploads/${fileName})`
+			}
+		}
+	}
 
 	//---------------------------------------------------------------
 	// Функция для отправки файла на сервер и изменения Background
 	//---------------------------------------------------------------
 	const onSubmit = async ({ file }: z.infer<typeof formSchema>) => {
 		if (file && file instanceof File) {
-
-
 			try {
+
+
+				// Создание объекта FormData для отправки на сервер и добавление в него файла
 				const data = new FormData()
 				data.set('file', file)
+				//-----------------------------------------------------------------------------
 
+
+
+				// Отправка файла на сервер и получение ответа
 				const { success } = await uploadImage(data)
+				//-----------------------------------------------------------------------------
 
+
+
+				// Изменение имени файла в модальном окне
 				setFileName(
 					<ImagePlus
 						className='hover:scale-125 transition-all'
@@ -98,12 +132,34 @@ export function ChangeBackground() {
 						absoluteStrokeWidth
 					/>
 				)
+				//-----------------------------------------------------------------------------
+				
 
+
+				// Изменение Background на прямую в DOM структуре
+				if (closedDOMElement.current) closedDOMElement.current(file.name)
+				//-----------------------------------------------------------------------------
+
+
+
+				// Записываем изменения на сервер 
+				updateTextContent(pathName ,takeTextContentStructure())
+				//-----------------------------------------------------------------------------
+
+				
+
+				// Изменение сообщения в модальном окне
 				if (success) {
-					setResponseMessage(<p className="text-green-300 mt-[10px]">The image was successfully uploaded to the server</p>)
+					setResponseMessage(
+						<p className='text-green-300 mt-[10px]'>
+							The image was successfully uploaded to the server
+						</p>
+					)
 
-					setTimeout(() => setResponseMessage(''), 3000)
+					setTimeout(() => setResponseMessage(''), 1500)
 				}
+				//-----------------------------------------------------------------------------
+
 
 
 				// Чтобы опять можно было выбрать тот же файл
@@ -113,12 +169,19 @@ export function ChangeBackground() {
 				if (inputFile) {
 					inputFile.value = ''
 				}
+				//-----------------------------------------------------------------------------
 
 
+
+				// Сброс формы
+				form.reset()
 
 			} catch (e: unknown) {
+
+				// Вывод ошибки в консоль
 				console.error(getErrorMessage(e))
 
+				// Изменение сообщения в модальном окне на ошибку
 				setFileName(getErrorMessage(e))
 
 				// Чтобы опять можно было выбрать тот же файл
@@ -129,9 +192,9 @@ export function ChangeBackground() {
 					inputFile.value = ''
 				}
 
+				// Сброс формы
 				form.reset()
 
-				// Запуск функции изменения 
 			}
 		} else {
 			throw new Error('Something went wrong.')
@@ -140,7 +203,13 @@ export function ChangeBackground() {
 
 	return (
 		<Dialog>
-			<DialogTrigger className='absolute bottom-24 right-6 animate-pulse'>
+			<DialogTrigger
+				onClick={e => {
+					const closedFunc = elementDOMClosure(e)
+					closedFunc ? closedDOMElement.current = closedFunc : null
+				}}
+				className='absolute bottom-24 right-6 animate-pulse'
+			>
 				<Image
 					className='hover:scale-125 transition-all'
 					size={48}
@@ -178,11 +247,14 @@ export function ChangeBackground() {
 													}
 												}}
 											/>
-											<label htmlFor='file' className='cursor-pointer flex flex-col items-center justify-center text-center'>
+											<label
+												htmlFor='file'
+												className='cursor-pointer flex flex-col items-center justify-center text-center'
+											>
 												{fileName ? (
 													<>
-													{fileName}
-													{responseMessage}
+														{fileName}
+														{responseMessage}
 													</>
 												) : (
 													<>

@@ -5,7 +5,11 @@ export async function BestProducts() {
 	const data = await getProductsList()
 
 	return (
-		<section className='pt-[80px] pb-[110px] bg-cover bg-center bg-no-repeat bg-our-best bg-parchment'>
+		<section
+			data-background-image-element={true}
+			style={{ backgroundImage: `url(/parchmentBG.png)` }}
+			className='pt-[80px] pb-[110px] bg-cover bg-center bg-no-repeat bg-our-best'
+		>
 			<div className='container'>
 				<h2
 					extra-title-section='true'
