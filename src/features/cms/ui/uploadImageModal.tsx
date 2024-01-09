@@ -28,7 +28,7 @@ import React from 'react'
 import { takeTextContentStructure } from '../model/takeTextContentStructure'
 import { updateTextContent } from '../api/updateTextContent'
 import { usePathname } from 'next/navigation'
-// import { uploadFile } from '@/shared/api/uploadFile'
+import { getErrorMessage } from '@/shared/helpers/extractErrorMessage'
 
 //---------------------------------------------------------------
 // Инициализация схемы валидации
@@ -49,24 +49,6 @@ const formSchema = z.object({
 	),
 })
 
-//---------------------------------------------------------------
-// Функция для получения текста ошибки
-//---------------------------------------------------------------
-const getErrorMessage = (error: unknown): string => {
-	let message: string
-
-	if (error instanceof Error) {
-		message = error.message
-	} else if (error && typeof error === 'object' && 'message' in error) {
-		message = String(error.message)
-	} else if (typeof error === 'string') {
-		message = error
-	} else {
-		message = 'Something went wrong.'
-	}
-
-	return message
-}
 
 //---------------------------------------------------------------
 // Компонент модального окна для загрузки фото на сервер
@@ -118,7 +100,7 @@ export function UploadImageModal() {
 
 
 				// Отправка файла на сервер и получение ответа
-				const { success } = await uploadImage(data)
+				const { success } = await uploadImage(data, 'public/uploads')
 				//-----------------------------------------------------------------------------
 
 
@@ -163,9 +145,7 @@ export function UploadImageModal() {
 
 
 				// Чтобы опять можно было выбрать тот же файл
-				const inputFile = document.querySelector(
-					'input[type="file"]'
-				) as HTMLInputElement
+				const inputFile = document.querySelector('#fileImageChangeBackground') as HTMLInputElement
 				if (inputFile) {
 					inputFile.value = ''
 				}
@@ -185,9 +165,7 @@ export function UploadImageModal() {
 				setFileName(getErrorMessage(e))
 
 				// Чтобы опять можно было выбрать тот же файл
-				const inputFile = document.querySelector(
-					'input[type="file"]'
-				) as HTMLInputElement
+				const inputFile = document.querySelector('#fileImageChangeBackground') as HTMLInputElement
 				if (inputFile) {
 					inputFile.value = ''
 				}
@@ -237,7 +215,7 @@ export function UploadImageModal() {
 									<FormControl>
 										<div>
 											<input
-												id='file'
+												id='fileImageChangeBackground'
 												className='hidden'
 												type='file'
 												onChange={e => {
@@ -248,7 +226,7 @@ export function UploadImageModal() {
 												}}
 											/>
 											<label
-												htmlFor='file'
+												htmlFor='fileImageChangeBackground'
 												className='cursor-pointer flex flex-col items-center justify-center text-center'
 											>
 												{fileName ? (

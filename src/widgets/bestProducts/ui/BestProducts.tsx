@@ -1,5 +1,6 @@
+import { ProductCard } from '@/entities/productCard'
 import { ProductsList } from '@/entities/productsList'
-import { TextEditor } from '@/features/cms'
+import { CreateProduct, TextEditor } from '@/features/cms'
 import { getProductsList } from '@/shared/api/getProductsList'
 export async function BestProducts() {
 	const data = await getProductsList()
@@ -22,7 +23,7 @@ export async function BestProducts() {
 					iterable-structure='true'
 					className='grid grid-cols-[repeat(3,minmax(0,220px))] justify-center justify-items-center items-center gap-[70px] mt-[40px]'
 				>
-					<ProductsList data={data} pageType='best' />
+					<ProductsList data={data} pageType='best' ProductCard={ProductCard} CreateProduct={CreateProduct}/>
 				</div>
 			</div>
 		</section>

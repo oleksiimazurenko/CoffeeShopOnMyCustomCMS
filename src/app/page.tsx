@@ -1,5 +1,6 @@
+import { ProductCard } from '@/entities/productCard'
 import { ProductsList } from '@/entities/productsList'
-import { UploadImageModal, DnD, TextEditor } from '@/features/cms'
+import { UploadImageModal, DnD, TextEditor, CreateProduct } from '@/features/cms'
 import { getPages } from '@/shared/api/getPages'
 import { getProductsList } from '@/shared/api/getProductsList'
 import { typeCurrentItemsDnD } from '@/shared/store/store'
@@ -72,7 +73,7 @@ export default async function Home() {
 					domNode.data.includes('##UNIQUE_ITERABLE_CONTENT__PRODUCT_LIST##')
 				) {
 					// Заменяем текстовый узел на компонент ProductsList
-					return <ProductsList data={dataBestProductItem} pageType='best' />
+					return <ProductsList data={dataBestProductItem} pageType='best' ProductCard={ProductCard} CreateProduct={CreateProduct}/>
 				}
 			},
 		}
