@@ -3,6 +3,7 @@ import { UploadImageModal, DnD, TextEditor } from '@/features/cms'
 import { getPages } from '@/shared/api/getPages'
 import { getProductsList } from '@/shared/api/getProductsList'
 import { typeCurrentItemsDnD } from '@/shared/store/store'
+import { authOptions } from '@/shared/utils/nextAuth/auth'
 import { AboutUs } from '@/widgets/aboutUs'
 import { BestProducts } from '@/widgets/bestProducts'
 import { IntroHome } from '@/widgets/introHome'
@@ -12,15 +13,25 @@ import parse, {
 	HTMLReactParserOptions,
 	domToReact,
 } from 'html-react-parser'
+import { getServerSession } from 'next-auth'
 
 export default async function Home() {
+	
+	// Получаем общие данные для всех страниц
 	const pages = await getPages()
+	// Получаем данные для конкретной страницы
 	const dataPage = pages.find(({ type }) => type === 'not-iterable')
-
+	// Получаем данные для BestProducts
 	const dataBestProductItem = (await getProductsList()).filter(
 		({ type }) => type === 'best'
 	)
+	// Получаем активность сессии
+	const session = await getServerSession(authOptions)
 
+
+	// --------------------------------------------------------------------------------
+	// Массив объектов для DnD, который будет использоваться в качестве начального
+	// --------------------------------------------------------------------------------
 	const initialArrayObjectsForDnD: typeCurrentItemsDnD[] = [
 		{
 			id: 'item-1',
@@ -36,7 +47,10 @@ export default async function Home() {
 		},
 	]
 
-	// В данный момент не хватает знаний как вынести эту функцию в отдельный файл или как её сделать универсальной
+
+	// --------------------------------------------------------------------------------------------------------------------------------------------
+	// Эта фкнкция принимает строку с HTML и возвращает React-компоненты, должна находится непосредственно в компоненте, которая рендерит HTML
+	// --------------------------------------------------------------------------------------------------------------------------------------------
 	const parseHTMLToReactComponents = (htmlString: string): React.ReactNode => {
 		const options: HTMLReactParserOptions = {
 			replace: domNode => {
@@ -65,6 +79,10 @@ export default async function Home() {
 		return parse(htmlString, options)
 	}
 
+
+	// --------------------------------------------------------------------------------------------------------------------------------------------------------
+	// Эта функция принимает строку с HTML и возвращает массив объектов, (каждый объект это строка с HTML), каждый объект в этом массиве будет использоваться в качестве аргумента в функцию parseHTMLToReactComponents
+	// --------------------------------------------------------------------------------------------------------------------------------------------------------
 	const convertFromStrToObjArr = (
 		structure: string | undefined,
 		errorPlaceholder: string
@@ -76,7 +94,10 @@ export default async function Home() {
 		return itemsArray
 	}
 
-	const resultArrayObjectsForDnD: typeCurrentItemsDnD[] =
+	// --------------------------------------------------------------------------------
+	// Этот массив объектов будет использоваться в качестве props для компонента DnD
+	// --------------------------------------------------------------------------------
+	const fromDataBaseArrayObjectsForDnD: typeCurrentItemsDnD[] =
 		convertFromStrToObjArr(dataPage?.textContentStructure, 'data base empty')
 			.map(item => parseHTMLToReactComponents(item))
 			.map((item, i) => ({
@@ -84,8 +105,20 @@ export default async function Home() {
 				content: item,
 			}))
 
-	if (dataPage?.textContentStructure === 'DEFAULT')
-		return <DnD initialItems={initialArrayObjectsForDnD} UploadImageModal={UploadImageModal}/>
+	if(session) {
+		if (dataPage?.textContentStructure === 'DEFAULT'){
+			return <DnD initialItems={initialArrayObjectsForDnD} UploadImageModal={UploadImageModal}/>
+		}else{
+			return <DnD initialItems={fromDataBaseArrayObjectsForDnD} UploadImageModal={UploadImageModal}/>
+		}
+	}
 
-	return <DnD initialItems={resultArrayObjectsForDnD} UploadImageModal={UploadImageModal}/>
+	if(!session){
+		if (dataPage?.textContentStructure === 'DEFAULT'){
+			return initialArrayObjectsForDnD.map(item => item.content)
+		}else{
+			return fromDataBaseArrayObjectsForDnD.map(item => item.content)
+		}
+		
+	}
 }

@@ -8,8 +8,7 @@ const createPage = async (
 	slug: string,
 	type: string,
 	textContentStructure: string = 'DEFAULT',
-	isDisabled: boolean = false,
-	sectionBackgroundURL: string = ''
+	isDisabled: boolean = false
 	
 ) => {
 	const prisma = new PrismaClient()
@@ -21,8 +20,7 @@ const createPage = async (
 				slug,
 				type,
 				textContentStructure,
-				isDisabled,
-				sectionBackgroundURL
+				isDisabled
 			},
 		})
 

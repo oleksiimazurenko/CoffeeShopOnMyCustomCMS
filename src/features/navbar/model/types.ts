@@ -1,3 +1,5 @@
+import { Session } from 'next-auth'
+
 export type navbarPropsType = {
 	type: 'black' | 'white'
 
@@ -10,4 +12,13 @@ export type navbarPropsType = {
 		classNameTrigger?: string
 		classNameContent?: string
 	}) => JSX.Element
+
+	LogIn?: (props: {
+		
+	}) => JSX.Element
+
+	LogOut?: (props: {
+		
+	}) => JSX.Element
+	
 }

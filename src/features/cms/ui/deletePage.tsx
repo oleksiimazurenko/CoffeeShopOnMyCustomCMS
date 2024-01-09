@@ -1,5 +1,6 @@
 'use client'
 
+import { togglePageDisableStatus } from '@/shared/api/togglePageDisableStatus'
 import { Button } from '@/shared/ui/button'
 import {
 	Dialog,
@@ -12,7 +13,6 @@ import {
 import { XCircle } from 'lucide-react'
 import Link from 'next/link'
 import { deletePage } from '../api/deletePage'
-import { togglePageDisableStatus } from '@/shared/api/togglePageDisableStatus'
 
 export function DeletePage({
 	id,
@@ -24,7 +24,11 @@ export function DeletePage({
 	return (
 		<Dialog>
 			<DialogTrigger className='absolute top-[-5px] right-0 animate-pulse'>
-				<XCircle className='w-[15px] h-[15px] hover:scale-125 transition-all' />
+				<XCircle
+					className='w-[15px] h-[15px] hover:scale-125 transition-all'
+					strokeWidth={0.5}
+					absoluteStrokeWidth
+				/>
 			</DialogTrigger>
 
 			<DialogContent>

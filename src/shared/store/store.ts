@@ -1,3 +1,4 @@
+import { Session } from 'next-auth'
 import { ReactNode } from 'react'
 import { create } from 'zustand'
 
@@ -32,12 +33,12 @@ export const useDnDStore = create<typeStoreDnD>(set => ({
 
 //-----------------------------------------------------------------------------------------------------------------------
 
-export type typeIsAuthorizedStore = {
-	isAuthorized: boolean
-	setIsAuthorized: (value: boolean) => void
-}
+// export type typeSessionStore = {
+// 	session: Session | null
+// 	setSession: (session: Session | null) => void
+// }
 
-export const useIsAuthorizedStore = create<typeIsAuthorizedStore>(set => ({
-	isAuthorized: true,
-	setIsAuthorized: value => set({ isAuthorized: value })
-})) 
+// export const useSessionStore = create<typeSessionStore>(set => ({
+// 	session: null,
+// 	setSession: session => set({ session: session })
+// })) 

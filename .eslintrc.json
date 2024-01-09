@@ -69,11 +69,11 @@
 							[
 								"shared",
 								{
-									"segment": "helpers|utils"
+									"segment": "helpers"
 								}
 							]
 						],
-						"allow": "*.(ts|tsx)*"
+						"allow": "*.(ts|tsx)"
 					},
 					{
 						"target": [
@@ -84,7 +84,7 @@
 								}
 							]
 						],
-						"allow": "*.(ts|tsx)*"
+						"allow": "**/*.(ts|tsx)"
 					},
 					{
 						"target": [
@@ -95,7 +95,7 @@
 								}
 							]
 						],
-						"allow": "**"
+						"allow": "**/*.(ts|tsx)"
 					},
 					{
 						"target": ["widgets", "features", "entities"],

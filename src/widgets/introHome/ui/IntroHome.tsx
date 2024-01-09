@@ -1,9 +1,8 @@
 import { TextEditor } from '@/features/cms'
-import { PrimaryButton } from '@/features/primaryButton'
+import { PrimaryButton } from '@/entities/primaryButton'
 import Image from 'next/image'
 
 export function IntroHome() {
-	// const backgroundUrl = getBackgroundURL()
 	return (
 		<section
 			data-background-image-element={true}
@@ -27,7 +26,7 @@ export function IntroHome() {
 				<h3 className='mt-5 text-shadow-md text-xl font-bold text-slate-50'>
 					<TextEditor>Want to try our beans?</TextEditor>
 				</h3>
-				<PrimaryButton className='mt-4 border-2 border-white border-opacity-50 rounded-sm bg-transparent shadow-md px-10 py-2 text-[14px] font-bold text-slate-50 hover:bg-slate-50 hover:text-slate-800'>
+				<PrimaryButton>
 					<TextEditor>More</TextEditor>
 				</PrimaryButton>
 			</div>

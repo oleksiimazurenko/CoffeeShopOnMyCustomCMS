@@ -32,9 +32,9 @@ const formSchema = z.object({
 })
 
 type CreatePageProps = {
-  classNameTrigger?: string;
-  classNameContent?: string;
-};
+	classNameTrigger?: string
+	classNameContent?: string
+}
 
 export function CreatePage({
 	classNameTrigger,
@@ -59,7 +59,7 @@ export function CreatePage({
 	return (
 		<Dialog>
 			<DialogTrigger className={`${classNameTrigger}`}>
-				<PlusSquare />
+				<PlusSquare strokeWidth={0.5} absoluteStrokeWidth />
 			</DialogTrigger>
 
 			<DialogContent

@@ -1,21 +1,21 @@
 'use client'
 
 import { updateTextContent } from '@/features/cms/api/updateTextContent'
-import { useIsAuthorizedStore } from '@/shared/store/store'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef } from 'react'
 
-import cn from 'classnames'
+import { useSession } from 'next-auth/react'
 import { takeTextContentStructure } from '../model/takeTextContentStructure'
+import cn from 'classnames'
 
 export function TextEditor({
 	children,
 }: {
 	children: React.ReactNode | JSX.Element | string
 }) {
-	const { isAuthorized } = useIsAuthorizedStore()
 	const contentRef = useRef<HTMLDivElement>(null)
 	const pathName = usePathname()
+	const { status } = useSession()
 
 	useEffect(() => {
 		if (contentRef.current && typeof children === 'string') {
@@ -29,20 +29,16 @@ export function TextEditor({
 	}
 
 	return (
-		<>
-			{isAuthorized ? (
-				<span
-					className={cn('', {
-						['cursor-pointer']: isAuthorized === true,
-					})}
-					data-texteditor={isAuthorized}
-					contentEditable={true}
-					ref={contentRef}
-					onInput={handleInput}
-				/>
-			) : (
-				children
-			)}
-		</>
+		<span
+			className={cn('', {
+				['cursor-pointer']: status === 'authenticated',
+			})}
+			data-texteditor={true}
+			contentEditable={status === 'authenticated'}
+			ref={contentRef}
+			onInput={() => {
+				status === 'authenticated' && handleInput()
+			}}
+		/>
 	)
 }

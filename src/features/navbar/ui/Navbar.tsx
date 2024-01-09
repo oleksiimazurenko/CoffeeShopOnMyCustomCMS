@@ -1,15 +1,21 @@
+import { MainLogo } from '@/entities/mainLogo'
+import { NavLink } from '@/entities/navLink'
 import { getPages } from '@/shared/api/getPages'
+import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar'
+import { authOptions } from '@/shared/utils/nextAuth/auth'
 import cn from 'classnames'
-import Image from 'next/image'
-import Link from 'next/link'
+import { getServerSession } from 'next-auth'
 import { navbarPropsType } from '../model/types'
 
 export async function Navbar({
 	type,
 	DeletePage,
 	CreatePage,
+	LogIn,
+	LogOut,
 }: navbarPropsType) {
 	const dataMenuItems = await getPages()
+	const session = await getServerSession(authOptions)
 
 	return (
 		<nav
@@ -18,14 +24,7 @@ export async function Navbar({
 				['text-slate-800/90 justify-center']: type === 'black',
 			})}
 		>
-			<Link href='/' className='px-[20px]'>
-				<Image
-					src={`/${type === 'white' ? 'logoWhite' : 'logoBlack'}.svg`}
-					width={108}
-					height={35}
-					alt='logo'
-				/>
-			</Link>
+			<MainLogo type={type} />
 			<ul className='flex'>
 				{dataMenuItems
 					.filter(
@@ -34,17 +33,42 @@ export async function Navbar({
 					)
 					.map(({ id, name, slug, type }) => (
 						<li className='relative' key={id}>
-							<Link href={slug} className='px-[20px] text-[12px]'>
-								{name}
-							</Link>
-							<DeletePage
-								id={id}
-								typePage={type as 'static' | 'dynamic' | 'not-iterable'}
-							/>
+							<NavLink slug={slug} name={name} />
+							{session && (
+								<DeletePage
+									id={id}
+									typePage={type as 'static' | 'dynamic' | 'not-iterable'}
+								/>
+							)}
 						</li>
 					))}
-				<CreatePage classNameTrigger='ml-[20px] animate-pulse hover:scale-125 transition-all' />
+				{session && <CreatePage classNameTrigger='ml-[20px] animate-pulse hover:scale-125 transition-all' />}
 			</ul>
+
+			{LogIn ? (
+				session && session.user ? (
+					<div className='flex-1 flex justify-end items-center'>
+						<div className='ml-auto block mr-4'>
+							Hello Admin - {session.user.name || session.user.email}
+						</div>
+						<Avatar className='mr-2'>
+							<AvatarImage
+								src={
+									session.user.image
+										? session.user.image
+										: 'https://github.com/shadcn.png'
+								}
+							/>
+							<AvatarFallback>CN</AvatarFallback>
+						</Avatar>
+						{LogOut && <LogOut />}
+					</div>
+				) : (
+					<div className='flex-1 flex justify-end'>
+						<LogIn />
+					</div>
+				)
+			) : null}
 		</nav>
 	)
 }
